@@ -1,0 +1,192 @@
+import { useState, useMemo } from 'react';
+import { ArrowRight, Calculator } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { Button } from '@/components/ui/button';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+
+const tradingPairs = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'Custom'];
+
+const FeeCalculator = () => {
+  const [volume, setVolume] = useState([50000]);
+  const [selectedPair, setSelectedPair] = useState('BTC/USDT');
+  const [orderType, setOrderType] = useState<'maker' | 'taker'>('maker');
+  const { ref, isVisible } = useScrollAnimation(0.2);
+
+  const calculations = useMemo(() => {
+    const vol = volume[0];
+    let feeRate = 0.15;
+    let tier = 'Beginner';
+
+    if (vol >= 5000000) {
+      feeRate = 0.01;
+      tier = 'Institutional';
+    } else if (vol >= 500000) {
+      feeRate = 0.04;
+      tier = 'Elite';
+    } else if (vol >= 50000) {
+      feeRate = 0.08;
+      tier = 'Professional';
+    }
+
+    if (orderType === 'maker') {
+      feeRate *= 0.8; // 20% discount for makers
+    }
+
+    const monthlyFees = (vol * feeRate) / 100;
+    const competitorFees = (vol * 0.25) / 100;
+    const savings = competitorFees - monthlyFees;
+
+    return { monthlyFees, savings, tier, feeRate };
+  }, [volume, orderType]);
+
+  const formatVolume = (val: number) => {
+    if (val >= 1000000) return `$${(val / 1000000).toFixed(1)}M`;
+    if (val >= 1000) return `$${(val / 1000).toFixed(0)}K`;
+    return `$${val}`;
+  };
+
+  return (
+    <section className="py-24">
+      <div ref={ref} className="container mx-auto px-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h2 
+              className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-700 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              <span className="text-foreground">Calculate Your</span>{' '}
+              <span className="text-primary">Trading Costs</span>
+            </h2>
+            <p 
+              className={`text-muted-foreground text-lg transition-all duration-700 delay-100 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              See exactly what you'll pay before you trade. No hidden fees, no surprises.
+            </p>
+          </div>
+
+          {/* Calculator Card */}
+          <div 
+            className={`glass-card p-8 transition-all duration-700 delay-200 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="grid md:grid-cols-2 gap-12">
+              {/* Inputs */}
+              <div className="space-y-8">
+                {/* Volume Slider */}
+                <div>
+                  <label className="block text-foreground font-medium mb-4">
+                    Monthly Trading Volume
+                  </label>
+                  <Slider
+                    value={volume}
+                    onValueChange={setVolume}
+                    min={100}
+                    max={10000000}
+                    step={1000}
+                    className="mb-4"
+                  />
+                  <p className="text-2xl font-bold text-primary">{formatVolume(volume[0])}</p>
+                </div>
+
+                {/* Trading Pair */}
+                <div>
+                  <label className="block text-foreground font-medium mb-4">
+                    Trading Pair
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    {tradingPairs.map((pair) => (
+                      <button
+                        key={pair}
+                        onClick={() => setSelectedPair(pair)}
+                        className={`px-4 py-2 rounded-lg border transition-all ${
+                          selectedPair === pair
+                            ? 'border-primary bg-primary/20 text-primary'
+                            : 'border-white/20 text-muted-foreground hover:border-white/40'
+                        }`}
+                      >
+                        {pair}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Order Type Toggle */}
+                <div>
+                  <label className="block text-foreground font-medium mb-4">
+                    Order Type
+                  </label>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setOrderType('maker')}
+                      className={`flex-1 py-3 rounded-lg border transition-all ${
+                        orderType === 'maker'
+                          ? 'border-primary bg-primary/20 text-primary'
+                          : 'border-white/20 text-muted-foreground hover:border-white/40'
+                      }`}
+                    >
+                      Maker (Limit Orders)
+                    </button>
+                    <button
+                      onClick={() => setOrderType('taker')}
+                      className={`flex-1 py-3 rounded-lg border transition-all ${
+                        orderType === 'taker'
+                          ? 'border-primary bg-primary/20 text-primary'
+                          : 'border-white/20 text-muted-foreground hover:border-white/40'
+                      }`}
+                    >
+                      Taker (Market Orders)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Results */}
+              <div className="glass-card bg-secondary/50 p-6 rounded-xl flex flex-col justify-center">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                    <Calculator className="text-primary" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground text-sm">Your Tier</p>
+                    <p className="text-foreground font-semibold">{calculations.tier}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  <div className="flex justify-between items-center py-3 border-b border-white/10">
+                    <span className="text-muted-foreground">Fee Rate</span>
+                    <span className="text-foreground font-bold">{calculations.feeRate.toFixed(3)}%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-white/10">
+                    <span className="text-muted-foreground">Monthly Fees</span>
+                    <span className="text-foreground font-bold text-xl">
+                      ${calculations.monthlyFees.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-3">
+                    <span className="text-muted-foreground">You Save vs Competitors</span>
+                    <span className="text-green-400 font-bold text-xl">
+                      ${calculations.savings.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground group">
+                  Start Saving Now
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FeeCalculator;

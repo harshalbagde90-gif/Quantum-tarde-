@@ -1,20 +1,26 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-
-const assets = [
-  { name: 'Bitcoin', symbol: 'BTC', color: 'from-orange-400 to-orange-600' },
-  { name: 'Ethereum', symbol: 'ETH', color: 'from-blue-400 to-blue-600' },
-  { name: 'Solana', symbol: 'SOL', color: 'from-purple-400 to-purple-600' },
-  { name: 'Cardano', symbol: 'ADA', color: 'from-blue-300 to-blue-500' },
-  { name: 'Polygon', symbol: 'MATIC', color: 'from-violet-400 to-violet-600' },
-];
+import { useEffect, useState } from 'react';
 
 const TrustedAssets = () => {
   const { ref, isVisible } = useScrollAnimation(0.2);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (customElements.get('lottie-player')) {
+      setReady(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
+    script.async = true;
+    script.onload = () => setReady(true);
+    document.body.appendChild(script);
+  }, []);
 
   return (
     <section className="py-20 border-t border-white/5">
       <div ref={ref} className="container mx-auto px-6">
-        <h2 
+        <h2
           className={`text-center text-muted-foreground text-lg mb-12 transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
           }`}
@@ -22,24 +28,23 @@ const TrustedAssets = () => {
           Trade Your Favorite Assets
         </h2>
 
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-          {assets.map((asset, index) => (
-            <div
-              key={asset.symbol}
-              className={`flex items-center gap-3 transition-all duration-500 hover:scale-110 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${asset.color} flex items-center justify-center shadow-lg`}>
-                <span className="text-foreground font-bold text-sm">{asset.symbol.charAt(0)}</span>
-              </div>
-              <div className="hidden sm:block">
-                <p className="text-foreground font-medium">{asset.name}</p>
-                <p className="text-muted-foreground text-sm">{asset.symbol}</p>
-              </div>
-            </div>
-          ))}
+        <div
+          className={`flex items-center justify-center transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+          }`}
+        >
+          {ready ? (
+            <lottie-player
+              src="/animation/Crypto%20coins%20moving.json"
+              background="transparent"
+              speed="1"
+              className="w-[420px] h-[420px] max-w-[85vw] max-h-[85vw] md:w-[280px] md:h-[280px]"
+              loop
+              autoplay
+            ></lottie-player>
+          ) : (
+            <div className="w-[420px] h-[420px] max-w-[85vw] max-h-[85vw] md:w-64 md:h-64 rounded-full bg-muted animate-pulse" />
+          )}
         </div>
       </div>
     </section>

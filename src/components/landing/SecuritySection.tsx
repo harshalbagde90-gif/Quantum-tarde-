@@ -34,9 +34,9 @@ const SecuritySection = () => {
 
       <div ref={ref} className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <h2 
-            className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-700 ${
+            className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
@@ -50,16 +50,16 @@ const SecuritySection = () => {
           {securityFeatures.map((feature, index) => (
             <div
               key={feature.title}
-              className={`glass-card p-6 text-center hover-lift transition-all duration-500 ${
+              className={`glass-card p-5 md:p-6 text-center hover-lift transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6 animate-glow-pulse">
-                <feature.icon className="text-primary" size={32} />
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4 md:mb-6 animate-glow-pulse">
+                <feature.icon className="text-primary" size={28} />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm">{feature.description}</p>
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-2 md:mb-3">{feature.title}</h3>
+              <p className="text-muted-foreground text-xs md:text-sm">{feature.description}</p>
             </div>
           ))}
         </div>

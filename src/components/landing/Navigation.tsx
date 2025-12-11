@@ -18,10 +18,10 @@ function Logo3D() {
         perspective: '400px',
         animation: 'logo-spin-pause 6s linear infinite',
       }}
-      className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-pink-400 flex items-center justify-center shadow-lg"
+      className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-primary to-pink-400 flex items-center justify-center shadow-lg"
     >
       <span
-        className="text-foreground font-bold text-xl"
+        className="text-foreground font-bold text-lg md:text-xl"
         style={{
           textShadow: '2px 2px 8px rgba(0,0,0,0.25), 0 1px 0 #fff',
           transform: 'rotateY(15deg) rotateX(10deg)',
@@ -64,11 +64,11 @@ const Navigation = () => {
       }`}
     >
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <div className="flex items-center gap-2">
             <Logo3D />
-            <span className="text-xl font-bold text-foreground" style={{ fontFamily: 'Domine, serif' }}>
+            <span className="text-base md:text-xl font-bold text-foreground" style={{ fontFamily: 'Domine, serif' }}>
               QUANTUM<span className="text-primary"> TRADE</span>
             </span>
           </div>

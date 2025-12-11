@@ -44,9 +44,9 @@ const FeaturesSection = () => {
 
       <div ref={ref} className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <h2 
-            className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-700 ${
+            className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 transition-all duration-700 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
@@ -54,7 +54,7 @@ const FeaturesSection = () => {
             <span className="text-primary">Traders.</span>
           </h2>
           <p 
-            className={`text-muted-foreground text-lg max-w-2xl mx-auto transition-all duration-700 delay-100 ${
+            className={`text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto transition-all duration-700 delay-100 ${
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
@@ -63,20 +63,20 @@ const FeaturesSection = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className={`glass-card p-8 hover-lift group cursor-pointer transition-all duration-500 hover:border-primary/30 ${
+              className={`glass-card p-6 md:p-8 hover-lift group cursor-pointer transition-all duration-500 hover:border-primary/30 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary/30 transition-colors group-hover:animate-glow-pulse">
-                <feature.icon className="text-primary" size={28} />
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-primary/20 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-primary/30 transition-colors group-hover:animate-glow-pulse">
+                <feature.icon className="text-primary" size={24} />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-4">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3 md:mb-4">{feature.title}</h3>
+              <p className="text-muted-foreground text-sm md:text-base leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>

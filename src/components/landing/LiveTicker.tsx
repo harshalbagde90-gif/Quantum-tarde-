@@ -13,18 +13,18 @@ const tickerData = [
 
 const LiveTicker = () => {
   return (
-    <div className="fixed top-20 left-0 right-0 z-40 bg-secondary/50 backdrop-blur-sm border-b border-white/5 overflow-hidden">
+    <div className="fixed top-16 md:top-20 left-0 right-0 z-40 bg-secondary/50 backdrop-blur-sm border-b border-white/5 overflow-hidden">
       <div className="flex animate-ticker">
         {/* Duplicate for seamless loop */}
         {[...tickerData, ...tickerData].map((item, index) => (
           <div
             key={index}
-            className="flex items-center gap-3 px-6 py-2 whitespace-nowrap"
+            className="flex items-center gap-2 px-3 py-1 md:px-6 md:py-2 whitespace-nowrap"
           >
-            <span className="text-foreground font-medium text-sm">{item.symbol}</span>
-            <span className="text-foreground text-sm">${item.price}</span>
+            <span className="text-foreground font-medium text-xs md:text-sm">{item.symbol}</span>
+            <span className="text-foreground text-xs md:text-sm">${item.price}</span>
             <span
-              className={`flex items-center gap-1 text-xs font-medium ${
+              className={`flex items-center gap-1 text-[11px] md:text-xs font-medium ${
                 item.isUp ? 'text-green-400' : 'text-red-400'
               }`}
             >

@@ -14,28 +14,26 @@ const FeeCalculator = () => {
 
   const calculations = useMemo(() => {
     const vol = volume[0];
-    let feeRate = 0.15;
-    let tier = 'Beginner';
-
-    if (vol >= 5000000) {
-      feeRate = 0.01;
-      tier = 'Institutional';
-    } else if (vol >= 500000) {
-      feeRate = 0.04;
-      tier = 'Elite';
-    } else if (vol >= 50000) {
-      feeRate = 0.08;
-      tier = 'Professional';
-    }
-
-    if (orderType === 'maker') {
-      feeRate *= 0.8; // 20% discount for makers
-    }
-
+    const determineTier = (v: number) => {
+      if (v < 50000) return 'Basic';
+      if (v < 500000) return 'Professional';
+      if (v < 5000000) return 'VIP';
+      return 'Elite';
+    };
+    const getFeeRate = (tier: string, type: 'maker' | 'taker') => {
+      const feeStructure: Record<string, { maker: number; taker: number }> = {
+        Basic: { maker: 0.10, taker: 0.15 },
+        Professional: { maker: 0.064, taker: 0.084 },
+        VIP: { maker: 0.040, taker: 0.060 },
+        Elite: { maker: 0.020, taker: 0.030 },
+      };
+      return feeStructure[tier][type];
+    };
+    const tier = determineTier(vol);
+    const feeRate = getFeeRate(tier, orderType);
     const monthlyFees = (vol * feeRate) / 100;
     const competitorFees = (vol * 0.25) / 100;
     const savings = competitorFees - monthlyFees;
-
     return { monthlyFees, savings, tier, feeRate };
   }, [volume, orderType]);
 
@@ -46,7 +44,7 @@ const FeeCalculator = () => {
   };
 
   return (
-    <section className="py-24">
+    <section id="markets" className="py-24">
       <div ref={ref} className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -85,8 +83,8 @@ const FeeCalculator = () => {
                   <Slider
                     value={volume}
                     onValueChange={setVolume}
-                    min={100}
-                    max={10000000}
+                    min={0}
+                    max={1000000}
                     step={1000}
                     className="mb-4"
                   />

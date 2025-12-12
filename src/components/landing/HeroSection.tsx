@@ -53,21 +53,14 @@ const HeroSection = () => {
   const responseTime = useCountUp(10, 1500, true, isVisible);
 
   return (
-    <section className="relative min-h-screen pt-32 md:pt-40 pb-20 overflow-hidden">
+    <section id="home" className="relative min-h-screen pt-32 md:pt-40 pb-20 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
       <div className="absolute top-1/4 left-1/4 w-72 h-72 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-80 md:h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
       </div>
 
-      {/* Promo Banner */}
-      <div className="hidden md:flex absolute top-28 left-0 right-0 justify-center">
-        <div className="glass-card px-4 py-2 flex items-center gap-2 animate-fade-in">
-          <span className="text-primary">✨</span>
-          <span className="text-muted-foreground text-sm">Trade with 0.01% Fees - Limited Time Offer</span>
-          <ArrowRight size={14} className="text-primary" />
-        </div>
-      </div>
+      
 
       <div ref={ref} className="container mx-auto px-3 md:px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -140,7 +133,7 @@ const HeroSection = () => {
 
           {/* Right Content - Chart */}
           <div
-            className={`transition-all duration-1000 delay-500 mt-10 px-2 sm:px-0 lg:mt-0 lg:absolute lg:top-0 lg:left-[40%] lg:z-20 max-w-[320px] sm:max-w-[360px] md:max-w-[700px] mx-auto ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}
+            className={`transition-all duration-1000 delay-500 mt-10 px-2 sm:px-0 lg:mt-0 lg:absolute lg:top-0 lg:left-auto lg:right-10 lg:z-20 max-w-[320px] sm:max-w-[360px] md:max-w-[700px] mx-auto ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'}`}
             id="chart"
           >
             <TradingChart />

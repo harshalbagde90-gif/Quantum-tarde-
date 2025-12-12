@@ -38,7 +38,9 @@ const FeaturesSection = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
 
   return (
-    <section id="features" className="py-24 relative">
+    <>
+      <div id="trading" />
+      <section id="features" className="py-24 relative">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
 
@@ -82,6 +84,7 @@ const FeaturesSection = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
